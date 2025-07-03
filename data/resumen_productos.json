@@ -1,0 +1,278 @@
+[
+  {
+    "modelo": "DP-10Vet",
+    "precio": 3467
+  },
+  {
+    "modelo": "DP-50 Veterinario",
+    "precio": 5215
+  },
+  {
+    "modelo": "Ecógrafo Portátil L60",
+    "precio": 5945
+  },
+  {
+    "modelo": "Ecógrafo veterinario portátil HS-103V",
+    "precio": 5660
+  },
+  {
+    "modelo": "HONDA HS 1600V",
+    "precio": 2428
+  },
+  {
+    "modelo": "M6Vet",
+    "precio": 6830
+  },
+  {
+    "modelo": "M9Vet",
+    "precio": 4539
+  },
+  {
+    "modelo": "Veterinario Z60",
+    "precio": 1750
+  },
+  {
+    "modelo": "Vetina ES3",
+    "precio": 5162
+  },
+  {
+    "modelo": "Vetus 5",
+    "precio": 5391
+  },
+  {
+    "modelo": "Vetus 7",
+    "precio": 1609
+  },
+  {
+    "modelo": "Vetus 8",
+    "precio": 6024
+  },
+  {
+    "modelo": "Vetus 9",
+    "precio": 6760
+  },
+  {
+    "modelo": "Vetus E7",
+    "precio": 1628
+  },
+  {
+    "modelo": "Analizador de inmunofluorescencia",
+    "precio": 5328
+  },
+  {
+    "modelo": "Analizador morfológico multifuncional AI-100 Vet",
+    "precio": 6350
+  },
+  {
+    "modelo": "BC-30 Vet",
+    "precio": 2891
+  },
+  {
+    "modelo": "BC-5000 Vet",
+    "precio": 1932
+  },
+  {
+    "modelo": "BC-60R veterinario",
+    "precio": 3468
+  },
+  {
+    "modelo": "BS-240 Veterinario",
+    "precio": 3966
+  },
+  {
+    "modelo": "Centrífuga de mesa 4000rpmBIOBASE",
+    "precio": 6287
+  },
+  {
+    "modelo": "IM-8VET Monitor de cabecera",
+    "precio": 6557
+  },
+  {
+    "modelo": "M6 Series Mini Vet Monitor",
+    "precio": 6841
+  },
+  {
+    "modelo": "Micropipetas variables diferentes medidas",
+    "precio": 3099
+  },
+  {
+    "modelo": "Microscopio RED223",
+    "precio": 5087
+  },
+  {
+    "modelo": "Sistema KadieCheck PCR",
+    "precio": 3251
+  },
+  {
+    "modelo": "Sistema KadieCheck PCR – Extracción",
+    "precio": 5325
+  },
+  {
+    "modelo": "STAT FAX ® 4500",
+    "precio": 3867
+  },
+  {
+    "modelo": "UA-60V",
+    "precio": 6756
+  },
+  {
+    "modelo": "Vetube 30",
+    "precio": 6331
+  },
+  {
+    "modelo": "Anestesia Veterinaria R640-S1",
+    "precio": 3600
+  },
+  {
+    "modelo": "BeneFusion SP1 Veterinario",
+    "precio": 4102
+  },
+  {
+    "modelo": "BeneFusion VP1 Vet",
+    "precio": 4678
+  },
+  {
+    "modelo": "Capnometría EtCO2 Monitor",
+    "precio": 3055
+  },
+  {
+    "modelo": "ePM 12M Veterinario",
+    "precio": 5691
+  },
+  {
+    "modelo": "ePM 12M Veterinario",
+    "precio": 2521
+  },
+  {
+    "modelo": "HyLED 180 veterinario",
+    "precio": 5446
+  },
+  {
+    "modelo": "HyLED 580 veterinario",
+    "precio": 6559
+  },
+  {
+    "modelo": "Juego de mascarillas de anestesia veterinaria",
+    "precio": 3075
+  },
+  {
+    "modelo": "Monitor para Veterinaria IE-12 V",
+    "precio": 5340
+  },
+  {
+    "modelo": "PM60 veterinario",
+    "precio": 6492
+  },
+  {
+    "modelo": "uMEC12 Veterinario",
+    "precio": 4811
+  },
+  {
+    "modelo": "VA-900 Ventilador de anestesia",
+    "precio": 2010
+  },
+  {
+    "modelo": "Ventilador veterinario inteligente + máquina de anestesia TA80V",
+    "precio": 5133
+  },
+  {
+    "modelo": "Veta 5 / Veta 3",
+    "precio": 1733
+  },
+  {
+    "modelo": "WATO EX-20Vet",
+    "precio": 3865
+  },
+  {
+    "modelo": "DP-10Vet",
+    "precio": 4595
+  },
+  {
+    "modelo": "DP-50 Veterinario",
+    "precio": 4920
+  },
+  {
+    "modelo": "Ecógrafo Portátil L60",
+    "precio": 3182
+  },
+  {
+    "modelo": "Ecógrafo veterinario portátil HS-103V",
+    "precio": 3284
+  },
+  {
+    "modelo": "HONDA HS 1600V",
+    "precio": 4253
+  },
+  {
+    "modelo": "BC-30 Vet",
+    "precio": 1585
+  },
+  {
+    "modelo": "BC-5000 Vet",
+    "precio": 3578
+  },
+  {
+    "modelo": "BC-60R veterinario",
+    "precio": 3064
+  },
+  {
+    "modelo": "BeneFusion SP1 Veterinario",
+    "precio": 1730
+  },
+  {
+    "modelo": "BeneFusion VP1 Vet",
+    "precio": 5115
+  },
+  {
+    "modelo": "BS-240 Veterinario",
+    "precio": 5044
+  },
+  {
+    "modelo": "DP-10Vet",
+    "precio": 5232
+  },
+  {
+    "modelo": "DP-50 Veterinario",
+    "precio": 4479
+  },
+  {
+    "modelo": "ePM 12M Veterinario",
+    "precio": 5770
+  },
+  {
+    "modelo": "HyLED 180 veterinario",
+    "precio": 1731
+  },
+  {
+    "modelo": "HyLED 580 veterinario",
+    "precio": 4285
+  },
+  {
+    "modelo": "M6Vet",
+    "precio": 2450
+  },
+  {
+    "modelo": "M9Vet",
+    "precio": 1728
+  },
+  {
+    "modelo": "UA-60V",
+    "precio": 4260
+  },
+  {
+    "modelo": "Veta 5 / Veta 3",
+    "precio": 4435
+  },
+  {
+    "modelo": "Veterinario Z60",
+    "precio": 1792
+  },
+  {
+    "modelo": "Ecógrafo veterinario portátil HS-103V",
+    "precio": 2421
+  },
+  {
+    "modelo": "HONDA HS 1600V",
+    "precio": 2000
+  }
+]
