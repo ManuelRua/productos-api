@@ -25,14 +25,15 @@ function initDB() {
       console.error('Error abriendo BD:', err.message);
     } else {
       console.log('BD conectada');
-      createTable();
+      createTables();
     }
   });
 }
 
-// Crear tabla
-function createTable() {
-  const sql = `
+// Crear tablas
+function createTables() {
+  // Tabla productos
+  const sqlProductos = `
     CREATE TABLE IF NOT EXISTS productos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       modelo TEXT NOT NULL UNIQUE,
@@ -40,11 +41,29 @@ function createTable() {
     )
   `;
   
-  db.run(sql, (err) => {
+  // Tabla pago
+  const sqlPago = `
+    CREATE TABLE IF NOT EXISTS pago (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre TEXT NOT NULL,
+      img BLOB NOT NULL,
+      fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `;
+  
+  db.run(sqlProductos, (err) => {
     if (err) {
-      console.error('Error creando tabla:', err.message);
+      console.error('Error creando tabla productos:', err.message);
     } else {
-      console.log('Tabla creada');
+      console.log('Tabla productos creada');
+    }
+  });
+  
+  db.run(sqlPago, (err) => {
+    if (err) {
+      console.error('Error creando tabla pago:', err.message);
+    } else {
+      console.log('Tabla pago creada');
       loadData();
     }
   });
@@ -52,53 +71,92 @@ function createTable() {
 
 // Cargar datos - ARREGLADO para evitar duplicados
 function loadData() {
+  // Cargar datos de productos
   db.get('SELECT COUNT(*) as count FROM productos', (err, row) => {
     if (err) {
-      console.error('Error verificando datos:', err.message);
+      console.error('Error verificando datos productos:', err.message);
       return;
     }
     
     if (row.count > 0) {
       console.log(`BD ya tiene ${row.count} productos`);
+    } else {
+      // CAMBIO: Verificar si el archivo existe antes de leerlo
+      const dataPath = path.join(__dirname, 'data', 'resumen_productos.json');
+      
+      if (!fs.existsSync(dataPath)) {
+        console.log('Archivo de datos no encontrado, creando datos de ejemplo...');
+        createSampleData();
+      } else {
+        try {
+          const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+          
+          // Usar INSERT OR IGNORE para evitar duplicados
+          const stmt = db.prepare('INSERT OR IGNORE INTO productos (modelo, precio) VALUES (?, ?)');
+          
+          data.forEach(producto => {
+            stmt.run(producto.modelo, producto.precio, (err) => {
+              if (err) {
+                console.error(`Error insertando ${producto.modelo}:`, err.message);
+              } else {
+                console.log(`Insertado: ${producto.modelo}`);
+              }
+            });
+          });
+          
+          stmt.finalize((err) => {
+            if (err) {
+              console.error('Error finalizando statement:', err.message);
+            } else {
+              console.log('Datos cargados correctamente');
+            }
+          });
+          
+        } catch (error) {
+          console.error('Error cargando datos:', error.message);
+          createSampleData();
+        }
+      }
+    }
+  });
+  
+  // Cargar imagen QR de pago
+  loadPaymentQR();
+}
+
+// NUEVO: Función para cargar la imagen QR de pago
+function loadPaymentQR() {
+  db.get('SELECT COUNT(*) as count FROM pago WHERE nombre = ?', ['pagoQR'], (err, row) => {
+    if (err) {
+      console.error('Error verificando imagen QR:', err.message);
       return;
     }
     
-    // CAMBIO: Verificar si el archivo existe antes de leerlo
-    const dataPath = path.join(__dirname, 'data', 'resumen_productos.json');
+    if (row.count > 0) {
+      console.log('Imagen QR ya existe en BD');
+      return;
+    }
     
-    if (!fs.existsSync(dataPath)) {
-      console.log('Archivo de datos no encontrado, creando datos de ejemplo...');
-      createSampleData();
+    const imagePath = path.join(__dirname, 'data', 'pagoQR.jpeg');
+    
+    if (!fs.existsSync(imagePath)) {
+      console.log('Imagen pagoQR.jpeg no encontrada en carpeta data');
       return;
     }
     
     try {
-      const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+      const imageBuffer = fs.readFileSync(imagePath);
       
-      // Usar INSERT OR IGNORE para evitar duplicados
-      const stmt = db.prepare('INSERT OR IGNORE INTO productos (modelo, precio) VALUES (?, ?)');
-      
-      data.forEach(producto => {
-        stmt.run(producto.modelo, producto.precio, (err) => {
-          if (err) {
-            console.error(`Error insertando ${producto.modelo}:`, err.message);
-          } else {
-            console.log(`Insertado: ${producto.modelo}`);
-          }
-        });
-      });
-      
-      stmt.finalize((err) => {
+      db.run('INSERT INTO pago (nombre, img) VALUES (?, ?)', ['pagoQR', imageBuffer], function(err) {
         if (err) {
-          console.error('Error finalizando statement:', err.message);
+          console.error('Error insertando imagen QR:', err.message);
         } else {
-          console.log('Datos cargados correctamente');
+          console.log('Imagen QR cargada correctamente con ID:', this.lastID);
         }
       });
       
     } catch (error) {
-      console.error('Error cargando datos:', error.message);
-      createSampleData();
+      console.error('Error leyendo imagen QR:', error.message);
     }
   });
 }
@@ -147,7 +205,8 @@ app.get('/', (req, res) => {
       'GET /productos - Todos los productos',
       'GET /productos/search/MODELO - Buscar por modelo',
       'GET /productos/precio/MIN/MAX - Filtrar por precio',
-      'GET /productos/ID - Producto por ID'
+      'GET /productos/ID - Producto por ID',
+      'GET /pagoQR - Imagen QR de pago'
     ]
   });
 });
@@ -158,6 +217,26 @@ app.get('/health', (req, res) => {
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
+  });
+});
+
+// NUEVO: Endpoint para obtener imagen QR de pago
+app.get('/pagoQR', (req, res) => {
+  db.get('SELECT img FROM pago WHERE nombre = ?', ['pagoQR'], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else if (!row) {
+      res.status(404).json({ error: 'Imagen QR no encontrada' });
+    } else {
+      // Establecer headers para imagen
+      res.set({
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': 'public, max-age=86400' // Cache por 24 horas
+      });
+      
+      // Enviar la imagen
+      res.send(row.img);
+    }
   });
 });
 
@@ -230,6 +309,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
   console.log(`📖 Documentación en /`);
   console.log(`🔍 Health check en /health`);
+  console.log(`💳 Imagen QR en /pagoQR`);
 });
 
 // Cerrar BD al salir
