@@ -206,7 +206,7 @@ app.get('/', (req, res) => {
       'GET /productos/search/MODELO - Buscar por modelo',
       'GET /productos/precio/MIN/MAX - Filtrar por precio',
       'GET /productos/ID - Producto por ID',
-      'GET /pagoQR - Imagen QR de pago'
+      'GET /pagoQR - Imagen QR de pago en bytes (base64)'
     ]
   });
 });
@@ -220,7 +220,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// NUEVO: Endpoint para obtener imagen QR de pago
+// NUEVO: Endpoint para obtener imagen QR de pago en bytes
 app.get('/pagoQR', (req, res) => {
   db.get('SELECT img FROM pago WHERE nombre = ?', ['pagoQR'], (err, row) => {
     if (err) {
@@ -228,14 +228,22 @@ app.get('/pagoQR', (req, res) => {
     } else if (!row) {
       res.status(404).json({ error: 'Imagen QR no encontrada' });
     } else {
-      // Establecer headers para imagen
-      res.set({
-        'Content-Type': 'image/jpeg',
-        'Cache-Control': 'public, max-age=86400' // Cache por 24 horas
-      });
+      // Convertir buffer a base64
+      const base64Image = row.img.toString('base64');
       
-      // Enviar la imagen
-      res.send(row.img);
+      // Devolver JSON con la imagen en bytes
+      res.json({
+        success: true,
+        message: 'Imagen QR obtenida correctamente',
+        data: {
+          nombre: 'pagoQR',
+          formato: 'jpeg',
+          bytes: base64Image,
+          size: row.img.length,
+          // Para usar en HTML: data:image/jpeg;base64,${bytes}
+          dataUrl: `data:image/jpeg;base64,${base64Image}`
+        }
+      });
     }
   });
 });
